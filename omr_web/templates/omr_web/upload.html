@@ -1,0 +1,34 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br"> <!-- Define o idioma da página como português do Brasil -->
+<head>
+    <meta charset="UTF-8"> <!-- Suporta acentuação e caracteres especiais -->
+    <title>Scanner de Folha de Respostas</title> <!-- Título exibido na aba do navegador -->
+
+    <!-- Importa o arquivo CSS localizado na pasta "static/omr_web/style.css" -->
+    <link rel="stylesheet" type="text/css" href="{% static 'omr_web/style.css' %}">
+</head>
+<body>
+    <div class="container"> <!-- Container central para toda a página -->
+        <h1>Scanner de Respostas com OMR</h1> <!-- Título principal da página -->
+
+        <!-- Formulário de upload de imagem -->
+        <form method="POST" enctype="multipart/form-data"> <!-- enctype permite envio de arquivos -->
+            {% csrf_token %} <!-- Proteção contra ataques CSRF (obrigatório no Django) -->
+
+            {{ form.as_p }} <!-- Renderiza o formulário (campo de upload) como parágrafos -->
+
+            <button type="submit">Enviar Imagem</button> <!-- Botão de envio -->
+        </form>
+
+        <!-- Se houver uma nota e imagem corrigida, exibe o resultado -->
+        {% if score %}
+            <div class="resultado">
+                <p><strong>Nota:</strong> {{ score }}%</p> <!-- Exibe a nota formatada -->
+                <img src="{{ image_url }}" alt="Resultado"> <!-- Exibe imagem com correções -->
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

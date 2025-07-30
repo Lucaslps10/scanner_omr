@@ -1,0 +1,57 @@
+/* Define estilo geral do corpo da página */
+body {
+    font-family: Arial, sans-serif; /* Tipo de letra usada */
+    background-color: #f0f2f5;       /* Cor de fundo suave */
+    margin: 0;                       /* Remove margens */
+    padding: 40px;                   /* Espaçamento interno da página */
+}
+
+/* Estiliza a div principal que envolve o conteúdo */
+.container {
+    width: 500px;                   /* Largura fixa */
+    margin: auto;                   /* Centraliza horizontalmente */
+    background: #fff;               /* Fundo branco */
+    padding: 30px;                  /* Espaçamento interno */
+    border-radius: 12px;            /* Bordas arredondadas */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Sombra suave ao redor */
+}
+
+/* Estilo do título principal */
+h1 {
+    text-align: center;             /* Centraliza o texto */
+    margin-bottom: 20px;            /* Espaço inferior */
+}
+
+/* Formulário vertical com espaçamento interno */
+form {
+    display: flex;
+    flex-direction: column;         /* Um item por linha (coluna) */
+}
+
+/* Botão de envio */
+button {
+    padding: 10px;                  /* Espaço interno */
+    background-color: #0066cc;      /* Azul escuro */
+    color: white;                   /* Texto branco */
+    border: none;                   /* Sem borda */
+    border-radius: 6px;             /* Cantos arredondados */
+    cursor: pointer;                /* Cursor de "mãozinha" */
+}
+
+/* Efeito hover no botão (quando o mouse passa em cima) */
+button:hover {
+    background-color: #0052a3;      /* Azul um pouco mais escuro */
+}
+
+/* Bloco que exibe a nota e imagem corrigida */
+.resultado {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Estilo da imagem corrigida */
+img {
+    max-width: 100%;                /* Imagem nunca passa da largura do container */
+    border: 2px solid #ccc;         /* Borda cinza clara */
+    border-radius: 6px;             /* Bordas arredondadas */
+}
