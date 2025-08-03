@@ -69,13 +69,12 @@ scanner_omr/
 
 ### 1. Clone o projeto
 ```bash
-git clone https://github.com/seu-usuario/scanner_omr.git
+git clone https://github.com/Lucaslps10/scanner_omr.git
 cd scanner_omr
 ```
 
-### 2. Crie e ative o ambiente virtual
+### 2. Ative o ambiente virtual
 ```bash
-python -m venv ambiente
 ambiente\Scripts\activate  # Windows
 ```
 
