@@ -13,12 +13,11 @@ from omr.exceptions import OMRException
 
 class OMRScanner:
     def __init__(self, image_path, answer_key_dict):
-        # Atributos públicos
-        self.image_path = image_path                  # Caminho da imagem de entrada
-        self.answer_key = AnswerKey(answer_key_dict) # Gabarito (respostas corretas)
-        self.score = 0                                # Nota final calculada
+        self._image_path = image_path
+        self._answer_key = AnswerKey(answer_key_dict)
+        self._score = 0
 
-        # Atributos internos protegidos (uso interno da lógica)
+        # Atributos internos
         self._original_image = None
         self._processed_image = None
         self._doc_contour = None
@@ -27,10 +26,44 @@ class OMRScanner:
         self._thresh = None
         self._question_contours = None
 
+    # === PROPERTIES ===
+
+    @property
+    def image_path(self):
+        return self._image_path
+
+    @image_path.setter
+    def image_path(self, value):
+        if not isinstance(value, str) or not value.endswith(('.jpg', '.png')):
+            raise ValueError("Caminho da imagem inválido.")
+        self._image_path = value
+
+    @property
+    def answer_key(self):
+        return self._answer_key
+
+    @answer_key.setter
+    def answer_key(self, value):
+        if not isinstance(value, dict):
+            raise ValueError("O gabarito deve ser um dicionário.")
+        self._answer_key = AnswerKey(value)
+
+    @property
+    def score(self):
+        return self._score
+
+    @score.setter
+    def score(self, value):
+        if not isinstance(value, (int, float)):
+            raise ValueError("Nota inválida.")
+        self._score = value
+
+    # === MÉTODOS DE PROCESSAMENTO ===
+
     def scan(self):
         """Executa o processo completo de correção da folha."""
         try:
-            loader = ImageLoader(self.image_path)
+            loader = ImageLoader(self._image_path)
             loader.load()
             self._original_image = loader.get_image()
 
@@ -56,8 +89,8 @@ class OMRScanner:
             bubble_detector = BubbleDetector(self._thresh)
             self._question_contours = bubble_detector.detect_bubbles()
 
-            evaluator = AnswerEvaluator(self._question_contours, self._thresh, self.answer_key.get_key())
-            self.score = evaluator.evaluate(self._warped_image) 
+            evaluator = AnswerEvaluator(self._question_contours, self._thresh, self._answer_key.get_key())
+            self._score = evaluator.evaluate(self._warped_image)
 
         except OMRException as e:
             print(f"Erro no processamento OMR: {e}")
@@ -66,9 +99,7 @@ class OMRScanner:
             print(f"Erro inesperado: {e}")
             raise
 
-    # Métodos auxiliares públicos para acessar resultados
-    def get_score(self):
-        return self.score
+    # === MÉTODOS AUXILIARES ===
 
     def get_result_image(self):
         return self._warped_image

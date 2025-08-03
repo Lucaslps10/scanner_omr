@@ -8,6 +8,8 @@ import os
 from .forms import UploadImageForm
 from django.conf import settings
 from omr.omr_scanner import OMRScanner
+from .models import UploadOMR
+
 
 # Chave de respostas fixa (você pode depois tornar dinâmica)
 ANSWER_KEY = {0: 1, 1: 4, 2: 0, 3: 3, 4: 1}
@@ -42,9 +44,14 @@ def upload_image(request):
 
             # Caminho para exibir no template
             image_url = settings.MEDIA_URL + 'resultados/' + image_file.name
-            score = round(scanner.get_score(), 2)
+            score = round(scanner.score, 2)
+
+            # Salva no banco de dados
+            UploadOMR.objects.create(imagem='resultados/' + image_file.name, nota=score)
+
     else:
         form = UploadImageForm()
+        
 
     return render(request, 'omr_web/upload.html', {
         'form': form,
