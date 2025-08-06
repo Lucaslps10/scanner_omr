@@ -34,16 +34,18 @@ Permitir que professores ou instituições escaneiem imagens de folhas de respos
 
 ---
 
-## 📦 Conceitos de POO Aplicados
+## 📚 Conceitos de POO Aplicados
 
-| Conceito | Aplicação no Projeto |
-|---------|-----------------------|
-| **Encapsulamento** | Atributos e métodos privados (`_atributo`, `__metodo`) nas classes do pacote `omr` |
-| **Herança**        | Exceções personalizadas herdando de `Exception` (como `OMRException`) |
-| **Modularização**  | Código dividido em pacotes: `omr`, `omr_web`, cada um com responsabilidade própria |
-| **Abstração**      | Classes como `ImageLoader`, `DocumentDetector`, `AnswerEvaluator` isolam funcionalidades |
-| **Polimorfismo**   | Pode ser aplicado ao substituir estratégias de avaliação, transformação ou leitura futuramente |
-| **Atributos públicos/protegidos/privados** | Como exigido no projeto, alguns atributos foram tornados públicos para visualização; outros permanecem protegidos para encapsulamento da lógica interna |
+| Conceito             | Aplicação Concreta                                                                 |
+|----------------------|------------------------------------------------------------------------------------|
+| **Encapsulamento**   | Uso de atributos protegidos (`_atributo`) e `@property` para acesso controlado     |
+| **Herança**          | Classe `OMRScanner` herda de `ScannerBase` (classe abstrata)                       |
+| **Abstração**        | `ScannerBase` define interface obrigatória para qualquer scanner                   |
+| **Modularização**    | Cada classe tem um arquivo próprio no pacote `omr`, com responsabilidade isolada   |
+| **Tratamento de exceções** | Uso da classe `OMRException` personalizada e `try/except` em cada etapa do processo |
+| **Getters e setters**| Usados através de `@property` em `OMRScanner`, com validações de tipo              |
+| **Polimorfismo**     | Possibilidade de criar outros scanners herdando de `ScannerBase`                   |
+
 
 ---
 
@@ -52,15 +54,36 @@ Permitir que professores ou instituições escaneiem imagens de folhas de respos
 ```
 scanner_omr/
 ├── manage.py
-├── scanner_django/        # Configurações do projeto Django
-├── omr/                   # Pacote com as classes de processamento OMR
-├── omr_web/               # App Django (views, forms, templates, static)
-│   ├── templates/
-│   │   └── omr_web/upload.html
-│   ├── static/
-│   │   └── omr_web/style.css
-│   └── forms.py
+├── ambiente/ # Ambiente virtual (não versionar)
+├── scanner_django/ # Configurações principais do Django
+│ └── settings.py
+│ └── urls.py
+├── omr/ # Pacote com as classes de processamento OMR
+│ ├── scanner_base.py # Classe abstrata base
+│ ├── omr_scanner.py # Fachada principal (herda de ScannerBase)
+│ ├── image_loader.py
+│ ├── image_preprocessor.py
+│ ├── document_detector.py
+│ ├── perspective_transformer.py
+│ ├── thresholding.py
+│ ├── bubble_detector.py
+│ ├── answer_evaluator.py
+│ ├── answer_key.py
+│ └── exceptions.py
+├── omr_web/ # Aplicativo Django com views, templates e models
+│ ├── views.py
+│ ├── forms.py
+│ ├── models.py
+│ ├── urls.py
+│ ├── templates/
+│ │ └── omr_web/
+│ │ └── upload.html
+│ ├── static/
+│ │ └── omr_web/
+│ │ └── style.css
+├── media/ # Imagens enviadas e corrigidas (criado em tempo de execução)
 ├── README.md
+├── requirements.txt
 ```
 
 ---

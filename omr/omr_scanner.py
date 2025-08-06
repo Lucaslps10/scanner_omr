@@ -9,9 +9,13 @@ from omr.bubble_detector import BubbleDetector
 from omr.answer_evaluator import AnswerEvaluator
 from omr.answer_key import AnswerKey
 from omr.exceptions import OMRException
+from omr.scanner_base import ScannerBase # Importa a classe abstrata
 
 
-class OMRScanner:
+# Classe concreta que executa o processo de correção da folha de respostas OMR.
+# Esta classe herda de ScannerBase e implementa todos os métodos exigidos.
+    
+class OMRScanner(ScannerBase):
     def __init__(self, image_path, answer_key_dict):
         self._image_path = image_path
         self._answer_key = AnswerKey(answer_key_dict)
