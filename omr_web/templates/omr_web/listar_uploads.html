@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Uploads</title>
+    <link rel="stylesheet" href="{% static 'omr_web/style.css' %}">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        .btn-excluir {
+            background-color: #e74c3c;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-excluir:hover {
+            background-color: #c0392b;
+        }
+        .nota {
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Uploads Realizados</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Imagem Corrigida</th>
+                    <th>Nota</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for upload in uploads %}
+                <tr>
+                    <td>
+                        <img src="{{ upload.imagem.url }}" width="200">
+                    </td>
+                    <td class="nota">{{ upload.nota }}%</td>
+                    <td>
+                        <form method="post" action="{% url 'excluir_upload' upload.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-excluir">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">Nenhum upload encontrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

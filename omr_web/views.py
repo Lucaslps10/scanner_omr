@@ -4,6 +4,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
+from django.shortcuts import render, redirect, get_object_or_404
 import os
 from .forms import UploadImageForm
 from django.conf import settings
@@ -58,3 +59,19 @@ def upload_image(request):
         'score': score,
         'image_url': image_url,
     })
+
+def listar_uploads(request):
+    uploads = UploadOMR.objects.all().order_by('-id')  # Listar do mais recente ao mais antigo
+    return render(request, 'omr_web/listar_uploads.html', {'uploads': uploads})
+
+def excluir_upload(request, pk):
+    upload = get_object_or_404(UploadOMR, pk=pk)
+
+    # Remove o arquivo de imagem do sistema
+    image_path = os.path.join(settings.MEDIA_ROOT, str(upload.imagem))
+    if os.path.exists(image_path):
+        os.remove(image_path)
+
+    # Exclui do banco de dados
+    upload.delete()
+    return redirect('listar_uploads')

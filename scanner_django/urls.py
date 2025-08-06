@@ -20,11 +20,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from omr_web.views import upload_image
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('omr_web.urls')),
     path('', upload_image, name='upload'),
 ]
 
